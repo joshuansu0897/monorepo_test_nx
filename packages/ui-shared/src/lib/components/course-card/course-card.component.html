@@ -1,0 +1,14 @@
+<div class="course-card">
+  <div class="course-header">
+    <h3 class="course-title">{{ course.title }}</h3>
+    <span class="course-teacher">{{ course.teacher }}</span>
+  </div>
+  <div class="course-body">
+    <p class="course-description">{{ course.description }}</p>
+  </div>
+  @if (showActions) {
+    <div class="course-actions">
+      <ng-content></ng-content>
+    </div>
+  }
+</div>

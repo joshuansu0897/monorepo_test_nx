@@ -1,0 +1,55 @@
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        @for (column of columns; track column.key) {
+          <th 
+            [class.sortable]="column.sortable"
+            (click)="onSort(column)">
+            {{ column.label }}
+            @if (column.sortable && sortColumn === column.key) {
+              <span class="sort-indicator">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            }
+          </th>
+        }
+        @if (actions && actions.length > 0) {
+          <th class="actions-column">Acciones</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of sortedData; track trackByFn($index, item)) {
+        <tr>
+          @for (column of columns; track column.key) {
+            <td>
+              {{ getNestedValue(item, column.key) }}
+            </td>
+          }
+          @if (actions && actions.length > 0) {
+            <td class="actions-cell">
+              @for (action of actions; track action.label) {
+                <button 
+                  [class]="'btn btn-sm btn-' + (action.variant || 'primary')"
+                  (click)="action.onClick(item)">
+                  @if (action.icon) {
+                    <span [innerHTML]="action.icon"></span>
+                  }
+                  {{ action.label }}
+                </button>
+              }
+            </td>
+          }
+        </tr>
+      }
+      @if (!data || data.length === 0) {
+        <tr>
+          <td [colSpan]="columns.length + (actions?.length ? 1 : 0)" class="no-data">
+            {{ noDataMessage }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

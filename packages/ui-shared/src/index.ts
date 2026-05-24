@@ -1,1 +1,1 @@
-export * from './lib/ui-shared/ui-shared';
+export * from './lib/components';
