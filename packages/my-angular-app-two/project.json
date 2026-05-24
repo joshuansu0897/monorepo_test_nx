@@ -1,0 +1,83 @@
+{
+  "name": "my-angular-app-two",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "packages/my-angular-app-two/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/my-angular-app-two",
+        "browser": "packages/my-angular-app-two/src/main.ts",
+        "tsConfig": "packages/my-angular-app-two/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "packages/my-angular-app-two/public"
+          }
+        ],
+        "styles": ["packages/my-angular-app-two/src/styles.css"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "my-angular-app-two:build:production"
+        },
+        "development": {
+          "buildTarget": "my-angular-app-two:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/my-angular-app-two/jest.config.cts",
+        "tsConfig": "packages/my-angular-app-two/tsconfig.spec.json"
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "my-angular-app-two:build",
+        "port": 4200,
+        "staticFilePath": "dist/packages/my-angular-app-two/browser",
+        "spa": true
+      }
+    }
+  }
+}
