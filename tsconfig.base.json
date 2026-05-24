@@ -13,7 +13,10 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "paths": {}
+    "paths": {
+      "@monorepo-test/ui-shared": ["./packages/ui-shared/src/index.ts"],
+      "@monorepo-test/utils-common": ["./packages/utils-common/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
