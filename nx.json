@@ -1,4 +1,9 @@
 {
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": true
+    }
+  },
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "defaultBase": "master",
@@ -41,6 +46,18 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "json": "{workspaceRoot}/tsconfig.json",
+          "fields": ["extends", "files", "include"]
+        }
+      ]
     }
   },
   "plugins": [
@@ -73,11 +90,6 @@
     },
     "@nx/angular:component": {
       "style": "css"
-    }
-  },
-  "pluginsConfig": {
-    "@nx/js": {
-      "analyzeSourceFiles": true
     }
   }
 }
