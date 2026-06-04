@@ -1,0 +1,33 @@
+<div class="courses-container">
+  <div class="page-header">
+    <h2>Available Courses</h2>
+    <p>Explore our courses and enroll in the ones that interest you the most</p>
+  </div>
+
+  @if (courses.length > 0) {
+    <div class="courses-grid">
+      @for (course of courses; track course.id) {
+        <shared-course-card [course]="course">
+          <shared-button 
+            [variant]="getButtonVariant(course.id)"
+            [disabled]="!canEnroll(course.id)"
+            (click)="enrollInCourse(course.id)">
+            {{ isEnrolling ? 'Enrolling...' : getButtonText(course.id) }}
+          </shared-button>
+        </shared-course-card>
+      }
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading">
+      <p>Loading courses...</p>
+    </div>
+  }
+
+  @if (error) {
+    <div class="error">
+      <p>❌ Error: {{ error }}</p>
+    </div>
+  }
+</div>

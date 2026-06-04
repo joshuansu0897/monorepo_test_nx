@@ -1,2 +1,21 @@
-<app-nx-welcome></app-nx-welcome>
-<router-outlet></router-outlet>
+<div class="app-container">
+  <header class="app-header">
+    <h1>Student Platform</h1>
+    <div class="user-selector">
+      <label for="student-select">Current User:</label>
+      <select id="student-select" (change)="onStudentChange($event)" [value]="currentStudentId">
+        @for (student of students; track student.id) {
+          <option [value]="student.id">{{student.name}}</option>
+        }
+      </select>
+    </div>
+    <nav>
+      <a routerLink="/courses" routerLinkActive="active">Available Courses</a>
+      <a routerLink="/my-enrollments" routerLinkActive="active">My Enrollments</a>
+    </nav>
+  </header>
+  
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,28 @@
+<div class="enrollments-container">
+  <div class="page-header">
+    <h2>My Enrollments</h2>
+    <p>Here you can see all the courses you are enrolled in</p>
+  </div>
+
+  @if (!loading && !error) {
+    <shared-table 
+      [data]="enrollments"
+      [columns]="tableColumns"
+      [actions]="tableActions"
+      noDataMessage="You have no enrollments yet. Go to the courses section to enroll!">
+    </shared-table>
+  }
+
+  @if (loading) {
+    <div class="loading">
+      <p>Loading your enrollments...</p>
+    </div>
+  }
+
+  @if (error) {
+    <div class="error">
+      <p>❌ Error: {{ error }}</p>
+      <shared-button (click)="loadEnrollments()">Retry</shared-button>
+    </div>
+  }
+</div>
