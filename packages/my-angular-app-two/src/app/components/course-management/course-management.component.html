@@ -1,0 +1,113 @@
+<div class="course-management-container">
+  <div class="page-header">
+    <h2>Course Management</h2>
+    <p>Manage the courses available on the platform</p>
+  </div>
+
+  <!-- Form for creating/editing a course -->
+  <div class="course-form" [class.editing]="editingCourse">
+    <h3>{{ editingCourse ? 'Edit Course' : 'Create New Course' }}</h3>
+    <form (ngSubmit)="saveCourse()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Course Title:</label>
+          <input 
+            type="text" 
+            id="title"
+            [(ngModel)]="courseForm.title" 
+            name="title"
+            required 
+            placeholder="E.g.: Introduction to Angular"
+            [class.error]="courseForm.title.length > 0 && !courseForm.title.trim()">>
+        </div>
+        <div class="form-group">
+          <label for="teacher">Teacher Name:</label>
+          <input 
+            type="text" 
+            id="teacher"
+            [(ngModel)]="courseForm.teacher" 
+            name="teacher"
+            required 
+            placeholder="E.g.: John Doe"
+            [class.error]="courseForm.teacher.length > 0 && !courseForm.teacher.trim()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea 
+          id="description"
+          [(ngModel)]="courseForm.description" 
+          name="description"
+          required 
+          placeholder="Describe the course content and objectives"
+          rows="3"
+          [class.error]="courseForm.description.length > 0 && !courseForm.description.trim()">
+        </textarea>
+      </div>
+      <div class="form-actions">
+        <shared-button 
+          type="submit" 
+          variant="success"
+          [disabled]="isSubmitting || !isFormValid()">
+          {{ isSubmitting ? 'Saving...' : (editingCourse ? 'Update' : 'Create') }}
+        </shared-button>
+        @if (editingCourse) {
+          <shared-button 
+            type="button" 
+            variant="secondary"
+            (click)="cancelEdit()">
+            Cancel
+          </shared-button>
+        }
+      </div>
+    </form>
+  </div>
+
+  <!-- Courses Preview -->
+  <div class="courses-preview">
+    <h3>Courses Preview</h3>
+    @if (!loading && !error && courses.length > 0) {
+      <div class="courses-grid">
+        @for (course of courses; track course.id) {
+          <shared-course-card [course]="course" [showActions]="false">
+            <shared-button 
+              variant="primary" 
+              (click)="editCourse(course)">
+              Edit
+            </shared-button>
+            <shared-button 
+              variant="danger" 
+              (click)="deleteCourse(course)">
+              Delete
+            </shared-button>
+          </shared-course-card>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Courses Table -->
+  <div class="courses-table">
+    @if (!loading && !error) {
+      <shared-table 
+        [data]="courses"
+        [columns]="tableColumns"
+        [actions]="tableActions"
+        noDataMessage="No courses created yet. Create the first course!">
+      </shared-table>
+    }
+
+    @if (loading) {
+      <div class="loading">
+        <p>Loading courses...</p>
+      </div>
+    }
+
+    @if (error) {
+      <div class="error">
+        <p>❌ Error: {{ error }}</p>
+        <shared-button (click)="loadCourses()">Retry</shared-button>
+      </div>
+    }
+  </div>
+</div>

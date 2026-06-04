@@ -1,0 +1,66 @@
+<div class="course-enrollments-container">
+  <div class="page-header">
+    <h2>Course Enrollments</h2>
+    <p>Check which students are enrolled in each course</p>
+  </div>
+
+  <!-- Course Selector -->
+  <div class="course-selector">
+    <label for="courseSelect">Select a course:</label>
+    <select 
+      id="courseSelect"
+      [(ngModel)]="selectedCourseId" 
+      (ngModelChange)="onCourseChange()"
+      [disabled]="loadingCourses">
+      <option value="">Select a course</option>
+      @for (course of courses; track course.id) {
+        <option [value]="course.id">
+          {{ course.title }} - {{ course.teacher }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <!-- Selected Course Information -->
+  @if (selectedCourse) {
+    <div class="course-info">
+      <h3>{{ selectedCourse.title }}</h3>
+      <p><strong>Teacher:</strong> {{ selectedCourse.teacher }}</p>
+      <p><strong>Description:</strong> {{ selectedCourse.description }}</p>
+      <p><strong>Total Enrolled Students:</strong> {{ enrollments.length }}</p>
+    </div>
+  }
+
+  <!-- Enrollments Table -->
+  @if (selectedCourseId) {
+    <div class="enrollments-table">
+      @if (!loadingEnrollments && !error) {
+        <shared-table 
+          [data]="enrollments"
+          [columns]="tableColumns"
+          noDataMessage="No students are enrolled in this course yet.">
+        </shared-table>
+      }
+
+      @if (loadingEnrollments) {
+        <div class="loading">
+          <p>Loading enrollments...</p>
+        </div>
+      }
+
+      @if (error) {
+        <div class="error">
+          <p>❌ Error: {{ error }}</p>
+          <shared-button (click)="loadEnrollments()">Retry</shared-button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Message when no course is selected -->
+  @if (!selectedCourseId && !loadingCourses) {
+    <div class="no-selection">
+      <p>👆 Select a course to view enrollments</p>
+    </div>
+  }
+</div>
